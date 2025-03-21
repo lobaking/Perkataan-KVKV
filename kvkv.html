@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KVKV Game - Match the Picture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .drag-container, .drop-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .box {
+            width: 100px;
+            height: 50px;
+            border: 2px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: lightgray;
+        }
+        .dropzone {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        img {
+            width: 80px;
+            height: 80px;
+        }
+        #score {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Match the Word with the Picture</h1>
+    <p>Drag the correct word into the corresponding picture box.</p>
+    <p id="score">Score: 0</p>
+    
+    <div class="drag-container" id="dragContainer">
+        <div class="box" draggable="true" ondragstart="drag(event)" id="susu">susu</div>
+        <div class="box" draggable="true" ondragstart="drag(event)" id="buku">buku</div>
+        <div class="box" draggable="true" ondragstart="drag(event)" id="kuku">kuku</div>
+        <div class="box" draggable="true" ondragstart="drag(event)" id="bola">bola</div>
+        <div class="box" draggable="true" ondragstart="drag(event)" id="cili">cili</div>
+        <div class="box" draggable="true" ondragstart="drag(event)" id="dadu">dadu</div>
+    </div>
+    
+    <div class="drop-container">
+        <div class="dropzone" ondrop="drop(event, 'susu')" ondragover="allowDrop(event)">
+            <img src="https://www.shutterstock.com/image-vector/tall-glass-milk-carton-box-600nw-2017090295.jpg" alt="Milk">
+        </div>
+        <div class="dropzone" ondrop="drop(event, 'buku')" ondragover="allowDrop(event)">
+            <img src="https://img.freepik.com/premium-vector/hand-drawn-book-cartoon-illustration-isolated-white-background_921039-24013.jpg?semt=ais_hybrid" alt="Book">
+        </div>
+        <div class="dropzone" ondrop="drop(event, 'kuku')" ondragover="allowDrop(event)">
+            <img src="https://img.freepik.com/premium-vector/hand-drawn-book-cartoon-illustration-isolated-white-background_921039-24013.jpg?semt=ais_hybrid" alt="Nail">
+        </div>
+        <div class="dropzone" ondrop="drop(event, 'bola')" ondragover="allowDrop(event)">
+            <img src="https://img.freepik.com/free-vector/beach-ball-filled-outline_78370-6149.jpg" alt="Ball">
+        </div>
+        <div class="dropzone" ondrop="drop(event, 'cili')" ondragover="allowDrop(event)">
+            <img src="https://png.pngtree.com/png-clipart/20210310/original/pngtree-fresh-red-pepper-clip-art-png-image_5964505.png" alt="Chili">
+        </div>
+        <div class="dropzone" ondrop="drop(event, 'dadu')" ondragover="allowDrop(event)">
+            <img src="https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-playing-dice-vector-set-realistic-3d-illustration-of-two-white-dice-png-image_1895117.jpg" alt="Dice">
+        </div>
+    </div>
+    
+    <button onclick="replayGame()">Play Again</button>
+    
+    <audio id="correctSound" src="https://www.myinstants.com/media/sounds/correct.mp3"></audio>
+    <audio id="wrongSound" src="https://www.myinstants.com/media/sounds/wrong.mp3"></audio>
+    
+    <script>
+        let score = 0;
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+        
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        
+        function drop(ev, correctWord) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text");
+            let droppedElement = document.getElementById(data);
+            
+            if (data === correctWord) {
+                ev.target.appendChild(droppedElement);
+                droppedElement.draggable = false;
+                document.getElementById("correctSound").play();
+                score += 10;
+            } else {
+                document.getElementById("wrongSound").play();
+                score -= 5;
+            }
+            document.getElementById("score").innerText = "Score: " + score;
+        }
+        
+        function replayGame() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
